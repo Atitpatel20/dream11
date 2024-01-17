@@ -7,6 +7,9 @@ import com.dream11.dream11.repository.UserRepository;
 import com.dream11.dream11.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -23,10 +26,8 @@ public class UserServiceImpl implements UserService {
         users.setEmail(userDto.getEmail());
         users.setMobile(userDto.getMobile());
         User saveUsers = userRepository.save(users);
-        UserDto dto= new UserDto();
-        dto.setName(saveUsers.getName());
-        dto.setEmail(saveUsers.getEmail());
-        dto.setMobile(saveUsers.getMobile());
+
+        UserDto dto = mapToDto(saveUsers);
         return dto;
     }
 
@@ -35,10 +36,30 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("Record not found with id: "+id)
         );
-        UserDto dto= new UserDto();
-        dto.setName(user.getName());
-        dto.setEmail(user.getEmail());
-        dto.setMobile(user.getMobile());
-        return dto;
+        UserDto userDto = mapToDto(user);
+        return userDto;
+    }
+
+    @Override
+    public List<UserDto> getAllUser() {
+        List<User> users = userRepository.findAll();
+        List<UserDto> dtos = users.stream().map(u -> mapToDto(u)).collect(Collectors.toList());
+        return dtos;
+    }
+    UserDto mapToDto(User user){
+        UserDto userDto= new UserDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setEmail(user.getEmail());
+        userDto.setMobile(user.getMobile());
+        return userDto;
+    }
+    User mapToEntity(UserDto userDto){
+        User user= new User();
+        user.setId(userDto.getId());
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setMobile(userDto.getMobile());
+        return user;
     }
 }
