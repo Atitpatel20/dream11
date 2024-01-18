@@ -9,5 +9,5 @@ public interface UserService {
 
     UserDto getUserById(long id);
 
-    List<UserDto> getAllUser();
+    List<UserDto> getAllUser(int pageNo, int pageSize);
 }

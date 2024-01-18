@@ -27,9 +27,13 @@ public class UserController {
         UserDto dto = userService.getUserById(id);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
+    // http://localhost:8080/api/users?pageNo=0&pageSize=3
     @GetMapping
-    public List<UserDto> getAllUser(){
-        List<UserDto> dtos= userService.getAllUser();
+    public List<UserDto> getAllUser(
+            @RequestParam(name="pageNo",required = false,defaultValue = "0")int pageNo,
+            @RequestParam(name="pageSize",required = false,defaultValue = "0")int pageSize
+    ){
+        List<UserDto> dtos= userService.getAllUser(pageNo,pageSize);
         return dtos;
     }
 }

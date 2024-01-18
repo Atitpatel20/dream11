@@ -5,6 +5,9 @@ import com.dream11.dream11.exception.ResourceNotFoundException;
 import com.dream11.dream11.payload.UserDto;
 import com.dream11.dream11.repository.UserRepository;
 import com.dream11.dream11.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,8 +44,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUser() {
-        List<User> users = userRepository.findAll();
+    public List<UserDto> getAllUser(int pageNo, int pageSize) {
+        Pageable pageable= PageRequest.of(pageNo,pageSize);
+        Page<User> pageUsers = userRepository.findAll(pageable);
+        List<User> users = pageUsers.getContent();
         List<UserDto> dtos = users.stream().map(u -> mapToDto(u)).collect(Collectors.toList());
         return dtos;
     }
