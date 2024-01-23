@@ -27,13 +27,15 @@ public class UserController {
         UserDto dto = userService.getUserById(id);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
-    // http://localhost:8080/api/users?pageNo=0&pageSize=3
+    // http://localhost:8080/api/users?pageNo=0&pageSize=3&sortBy=mobile&sortDir=Des
     @GetMapping
     public List<UserDto> getAllUser(
             @RequestParam(name="pageNo",required = false,defaultValue = "0")int pageNo,
-            @RequestParam(name="pageSize",required = false,defaultValue = "0")int pageSize
+            @RequestParam(name="pageSize",required = false,defaultValue = "0")int pageSize,
+            @RequestParam(name="sortBy",required = false,defaultValue = "id")String sortBy,
+            @RequestParam(name="sortDir",required = false,defaultValue = "asc")String sortDir
     ){
-        List<UserDto> dtos= userService.getAllUser(pageNo,pageSize);
+        List<UserDto> dtos= userService.getAllUser(pageNo,pageSize,sortBy,sortDir);
         return dtos;
     }
 }
