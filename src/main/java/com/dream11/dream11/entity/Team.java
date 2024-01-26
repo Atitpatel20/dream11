@@ -5,22 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-@Data
 @Entity
-@Table(name = "users")
+@Data
+@Table(name = "teams")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Team {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String name;
-    private String email;
-    private long mobile;
+    private String userName;
+    private String teamName;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Team> teams;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
