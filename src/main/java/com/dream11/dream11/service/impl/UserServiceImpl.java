@@ -5,6 +5,7 @@ import com.dream11.dream11.exception.ResourceNotFoundException;
 import com.dream11.dream11.payload.UserDto;
 import com.dream11.dream11.repository.UserRepository;
 import com.dream11.dream11.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,15 +19,16 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private ModelMapper modelMapper;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.modelMapper=modelMapper;
     }
 
     @Override
     public UserDto createUser(UserDto userDto) {
         User users= new User();
-        users.setName(userDto.getName());
         users.setEmail(userDto.getEmail());
         users.setMobile(userDto.getMobile());
         User saveUsers = userRepository.save(users);
@@ -54,19 +56,19 @@ public class UserServiceImpl implements UserService {
     }
 
     UserDto mapToDto(User user){
-        UserDto userDto= new UserDto();
-        userDto.setId(user.getId());
-        userDto.setName(user.getName());
-        userDto.setEmail(user.getEmail());
-        userDto.setMobile(user.getMobile());
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+//        UserDto userDto= new UserDto();
+//        userDto.setId(user.getId());
+//        userDto.setEmail(user.getEmail());
+//        userDto.setMobile(user.getMobile());
         return userDto;
     }
     User mapToEntity(UserDto userDto){
-        User user= new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-        user.setMobile(userDto.getMobile());
+        User user = modelMapper.map(userDto, User.class);
+//        User user= new User();
+//        user.setId(userDto.getId());
+//        user.setEmail(userDto.getEmail());
+//        user.setMobile(userDto.getMobile());
         return user;
     }
 }
