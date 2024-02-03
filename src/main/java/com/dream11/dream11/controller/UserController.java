@@ -31,7 +31,7 @@ public class UserController {
     @GetMapping
     public List<UserDto> getAllUser(
             @RequestParam(name="pageNo",required = false,defaultValue = "0")int pageNo,
-            @RequestParam(name="pageSize",required = false,defaultValue = "0")int pageSize,
+            @RequestParam(name="pageSize",required = false,defaultValue = "3")int pageSize,
             @RequestParam(name="sortBy",required = false,defaultValue = "id")String sortBy,
             @RequestParam(name="sortDir",required = false,defaultValue = "asc")String sortDir
     ){
